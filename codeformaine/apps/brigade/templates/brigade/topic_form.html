@@ -1,0 +1,14 @@
+{% extends "modal_base.html" %}
+{% load static %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+<h2>{% if not object %}Add a Topic{% else %}Edit {{object}}{% endif %}</h2>
+
+<form class="modal-form" method="post" action="{% url 'topic-create' %}">{% csrf_token %}
+    {% bootstrap_form form %}
+    <p><input class="btn btn-success" type="submit" value="Add"></p>
+</form>
+
+{% endblock %}

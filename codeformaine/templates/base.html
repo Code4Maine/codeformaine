@@ -1,0 +1,187 @@
+{% load cms_tags sekizai_tags menu_tags static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="google-site-verification" content="zMwQJxNdc4_Ed6XNGbXgD79uR9pm1VxtI_nd3cS4DYA" />
+
+    <title>{% block title %}Code for Maine{% endblock %}</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <link href="{% static 'css/landing-page.css' %}" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Josefin+Sans|Droid+Sans|Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    {% render_block "css" %}
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+  <body {% block body_id %}{% endblock %} class="{% block body_class %}{% endblock %}">
+    {% cms_toolbar %}
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><img src="{% static 'img/cfm_logo_sm.png' %}" /></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            {% if request.user.is_authenticated %}
+            <li class="dropdown btn btn-default">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-user"></i>&nbsp;&nbsp;{{ request.user.worker_set.all.0 }}</a>
+                <ul class="dropdown-menu dropdown-user">
+                    <li><a href="{% url 'project-list' %}"><i class="fa fa-line-chart"></i>&nbsp;&nbsp;View Projects</a></li>
+                    <li><a href="{% url 'project-create' %}"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Project</a></li>
+                    {% if user.project_set.all %}
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Your projects</li>
+                    {% for project in user.project_set.all %}
+                    <li><a href="{{project.get_absolute_url}}">{% if project.color %}<i class="pj-box" style="border-left:15px solid {{project.color}}"></i>{% endif %}&nbsp;&nbsp;{{project}}</a></li>
+                    {% endfor %}
+                    {% endif %}
+                    <li class="divider"></li>
+                    <li><a href="{% url 'profile-detail' %}"><i class="fa fa-user fa-fw"></i> Your Profile</a></li>
+                    <li><a href="{% url 'account_reset_password' %}"><i class="fa fa-exchange fa-fw"></i> Change Password</a></li>
+                    <li class="divider"></li>
+                    <li><form id="logout" action="{% url 'account_logout' %}" method="post">{% csrf_token %}</form><a href="#" onclick="javscript:$('#logout').submit()"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+                </ul>
+            </li>
+            {% else %}
+            <li class="">
+                <a class="btn btn-default" href="{% url 'account_signup' %}"><i class="fa fa-plus fa-fw"></i> Register a new account</a>
+            </li>
+            <li>&nbsp;</li>
+            <li>
+                <a class="btn btn-default" href="{% url 'account_login' %}"><i class="fa fa-sign-in fa-fw"></i> Sign in</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+
+    {% block header %}
+    <!-- Header -->
+    <div class="intro-header">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="intro-message">
+                        <h2 class="subhead">Come hack for civic good</h2>
+                        <h1>Code for Maine</h1>
+                        <hr class="intro-divider">
+                        <p><i>A <a href="//www.codeforamerica.org">Code for America</a> Brigade</i></p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /.intro-header -->
+
+    <div class="lower-header">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-9 col-sm-10">
+                    <div class="lower-message">
+                        <p>Come join developers, designers, data geeks, leaders, and idea-makers who volunteer to help Maine government agencies and civic orgs adopt open web technologies.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-4">
+                    <a href="{% url 'account_signup' %}" class="btn btn-primary btn-lg join"><span class="network-name">Join our brigade</span></a>
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+    </div>
+    {% endblock header %}
+
+    <!-- Page Content -->
+    {% block content %}
+    {% endblock content %}
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <ul class="list-inline">
+                        <li>
+                            <a href="#home">Home</a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li>
+                            <a href="#about">About</a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li>
+                        <a href="{% url 'project-list' %}">Projects</a>
+                        </li>
+                        <li class="footer-menu-divider">&sdot;</li>
+                        <li>
+                            <a href="#contact">Contact</a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted small">Copyright &copy; Code for Maine 2014. All Rights Reserved</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    {% block extra_js %}{% endblock %}
+    {% render_block "js" %}
+
+    <!-- Piwik -->
+    <script type="text/javascript">
+      var _paq = _paq || [];
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="//stats.codeformaine.org/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', 1]);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <noscript><p><img src="//stats.codeformaine.org/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
+    <!-- End Piwik Code -->
+
+</body>
+
+</html>
